@@ -1,4 +1,4 @@
-from typing import List, Set, Tuple, Deque
+from typing import List, Tuple, Deque
 
 from collections import deque
 
@@ -12,7 +12,6 @@ class Array:
 
 class CountIslands:
     neighbours: List[Tuple[int]] = [(1, 0), (-1, 0), (0, 1), (0, -1), (-1, 1), (1, -1), (1, 1), (-1, -1)]
-    visited: Set[Tuple] = set()
     islands: int = 0
     q: Deque = deque()
 
@@ -20,21 +19,20 @@ class CountIslands:
         self.array = array
 
     def breadth_first_search(self, row, col):
-        self.visited.add((row, col))
+        self.array.array[row][col] = "2"  # mark as visited
         self.q.append((row, col))
         while self.q:
             _r, _c = self.q.popleft()
             for x, y in self.neighbours:
                 r, c = _r + x, _c + y
-                if (r in range(self.array.rows) and c in range(self.array.columns) and
-                        self.array.array[r][c] == "1" and (r, c) not in self.visited):
+                if r in range(self.array.rows) and c in range(self.array.columns) and self.array.array[r][c] == "1":
                     self.q.append((r, c))
-                    self.visited.add((r, c))
+                    self.array.array[r][c] = "2"  # mark as visited
 
     def count_islands(self):
         for row in range(self.array.rows):
             for col in range(self.array.columns):
-                if self.array.array[row][col] == "1" and (row, col) not in self.visited:
+                if self.array.array[row][col] == "1":
                     self.breadth_first_search(row, col)
                     self.islands += 1
         return self.islands

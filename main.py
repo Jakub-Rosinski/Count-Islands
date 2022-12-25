@@ -7,6 +7,7 @@ from count_islands import Array, CountIslands
 start = time.perf_counter()
 
 array = read_file_to_array()
+
 if __name__ == "__main__":
     if array:
         a = Array(array)
@@ -15,7 +16,7 @@ if __name__ == "__main__":
             ret = executor.submit(islands.count_islands)
 
         print(f"Number of islands: {ret.result()}")
-
-    finish = time.perf_counter()
-
-    print(f"Finished in {finish-start} seconds")
+        finish = time.perf_counter()
+        print(f"Finished in {finish-start} seconds")
+    else:
+        print("No data in array")
