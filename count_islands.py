@@ -14,21 +14,21 @@ class CountIslands:
     neighbours: List[Tuple[int]] = [(1, 0), (-1, 0), (0, 1), (0, -1), (-1, 1), (1, -1), (1, 1), (-1, -1)]
     visited: Set[Tuple] = set()
     islands: int = 0
+    q: Deque = deque()
 
     def __init__(self, array: Array):
         self.array = array
 
     def breadth_first_search(self, row, col):
-        q = deque()
         self.visited.add((row, col))
-        q.append((row, col))
-        while q:
-            _r, _c = q.popleft()
+        self.q.append((row, col))
+        while self.q:
+            _r, _c = self.q.popleft()
             for x, y in self.neighbours:
                 r, c = _r + x, _c + y
                 if (r in range(self.array.rows) and c in range(self.array.columns) and
                         self.array.array[r][c] == "1" and (r, c) not in self.visited):
-                    q.append((r, c))
+                    self.q.append((r, c))
                     self.visited.add((r, c))
 
     def count_islands(self):
