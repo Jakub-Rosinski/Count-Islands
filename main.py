@@ -1,10 +1,15 @@
+#!/usr/bin/env python3
+
 import argparse
 import concurrent.futures
+import logging
 
 from read_file import safe_load
 from count_islands import Array, CountIslands
 
 PATH_TO_FILE = "islands.txt"
+
+log = logging.getLogger(__name__)
 
 
 def parse_args():
@@ -27,8 +32,6 @@ def main():
             ret = executor.submit(islands.count_islands)
 
         print(f"Number of islands: {ret.result()}")
-    else:
-        print("No data in array")
 
 
 if __name__ == "__main__":

@@ -1,20 +1,41 @@
+import logging
 import os
 from typing import List
+
+log = logging.getLogger(__name__)
+
+
+class FileNotExist(Exception):
+    pass
+
+
+class FileNotReadable(Exception):
+    pass
+
+
+class FileEmpty(Exception):
+    pass
 
 
 def if_file_exists(path: str) -> bool:
     """Checks if file exists"""
-    return os.access(path, os.F_OK)
+    if os.access(path, os.F_OK):
+        return True
+    raise FileNotExist(f"File '{path}' does not exist")
 
 
 def if_file_readable(path: str) -> bool:
     """Checks if file us readable"""
-    return os.access(path, os.R_OK)
+    if os.access(path, os.R_OK):
+        return True
+    raise FileNotReadable(f"File '{path}' is not readable")
 
 
 def if_file_not_empty(path: str) -> bool:
     """Checks if file is not empty"""
-    return os.stat(path).st_size != 0
+    if os.stat(path).st_size != 0:
+        return True
+    raise FileEmpty(f"File '{path}' is empty")
 
 
 def if_array_rectangular(array: List[List[str]]) -> bool:
@@ -48,19 +69,26 @@ def read_file_to_array(path: str) -> List[List[str]]:
         if if_data_consistent(line):
             array.append(line)
         else:
+            log.error("Inconsistent data")
             return []
 
     if if_array_rectangular(array):
         return array
+
+    log.error("Incorrect structure of data - array must be rectangular")
     return []
 
 
 def safe_load(path: str) -> List[List[str]]:
-    conditions = [if_file_exists(path),
-                  if_file_readable(path),
-                  if_file_not_empty(path)]
+    try:
+        if_file_exists(path)
+        if_file_readable(path)
+        if_file_not_empty(path)
 
-    if all(conditions):
         data = read_file_to_array(path)
         return data
+    except (FileNotExist, FileNotReadable, FileEmpty) as err:
+        log.error(err)
+    except Exception as e:
+        log.error(f"Cannot read data from file {path} - error: {e}")
     return []
