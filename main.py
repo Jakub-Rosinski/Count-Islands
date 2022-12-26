@@ -31,7 +31,7 @@ def main():
         with concurrent.futures.ProcessPoolExecutor() as executor:
             ret = executor.submit(islands.count_islands)
 
-        print(f"Number of islands: {ret.result()}")
+        print(ret.result())
 
 
 if __name__ == "__main__":
