@@ -4,6 +4,7 @@ from collections import deque
 
 
 class Array:
+    """Class for creating array properties like itself, rows and columns"""
     def __init__(self, array: List[List[str]]):
         self.array = array
         self.rows = len(array)
@@ -11,6 +12,10 @@ class Array:
 
 
 class CountIslands:
+    """Class used for counting numbers. It uses a breath-first algorithm to count neighboured 'ones'
+    until it will come across on 'zero' then it adds an island. Visited places are marked as '2'
+    since algorithm is only '0' and '1' sensitive it is allowed to modify array in such way"""
+
     neighbours: List[Tuple[int]] = [(1, 0), (-1, 0), (0, 1), (0, -1), (-1, 1), (1, -1), (1, 1), (-1, -1)]
     islands: int = 0
     q: Deque = deque()

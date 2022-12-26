@@ -4,7 +4,7 @@ import argparse
 import concurrent.futures
 import logging
 
-from read_file import safe_load
+from to_array import safe_load
 from count_islands import Array, CountIslands
 
 PATH_TO_FILE = "islands.txt"
